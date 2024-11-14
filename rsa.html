@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,7 +36,7 @@
                         <div class="inner_key_gen">
                             <div class="row_copy_gen">
                                 <label class="key_head" for="public-key">Public Key</label>
-                                <textarea class="key_box box1" id="public-key" readonly="" placeholder="Your public key will appear here">${pub}</textarea>
+                                <textarea class="key_box box1" id="public-key" readonly="" placeholder="Your public key will appear here"></textarea>
                                 <button class="copy">Copy</button>
                             </div>
                             
@@ -45,7 +44,7 @@
                         <div class="inner_key_gen">
                             <div class="row_copy_gen">
                                 <label class="key_head" for="private-key">Private Key</label>
-                                <textarea class="key_box box1" id="private-key" readonly="" placeholder="Your private key will appear here">${pvt}</textarea>
+                                <textarea class="key_box box1" id="private-key" readonly="" placeholder="Your private key will appear here"></textarea>
                                 <button class="copy">Copy</button>
                             </div>
                             
@@ -59,11 +58,11 @@
             	<form action="encrypt">
                 <h2 class="rsa_en_de_head">RSA Encryption</h2>
                 <label class="select_size label2" for="manual-public-key">Enter Public Key</label>
-                <textarea class="key_box size2" id="manual-public-key" rows="1" cols="50" placeholder="Enter Public Key" name="pub">${pub}</textarea>
+                <textarea class="key_box size2" id="manual-public-key" rows="1" cols="50" placeholder="Enter Public Key" name="pub"></textarea>
                 <label class="select_size label2" for="plain-text">Plain Text</label>
-                <textarea class="key_box size2" id="plain-text" rows="4" cols="50" placeholder="Enter Plain Text..." name="pt">${plain}</textarea>
+                <textarea class="key_box size2" id="plain-text" rows="4" cols="50" placeholder="Enter Plain Text..." name="pt"></textarea>
                 <button class="generate_key second">Encrypt</button>
-                <textarea class="key_box size2" id="plain-text" rows="4" cols="50" placeholder="Enter Plain Text..." name="ct">${ct}</textarea>
+                <textarea class="key_box size2" id="plain-text" rows="4" cols="50" placeholder="Enter Plain Text..." name="ct"></textarea>
                 
                 </form>
             </div>
@@ -76,9 +75,9 @@
             <form action="decrypt">
                 <h2 class="rsa_en_de_head">RSA Decryption</h2>
                 <label class="select_size label2" for="manual-private-key">Enter Private Key</label>
-                <textarea class="key_box size2" id="manual-private-key" rows="1" cols="50" placeholder="Enter Private Key" name="pvt">${pvt}</textarea>
+                <textarea class="key_box size2" id="manual-private-key" rows="1" cols="50" placeholder="Enter Private Key" name="pvt"></textarea>
                 <label class="select_size label2" for="encrypted-text">Encrypted Text</label>
-                <textarea class="key_box size2" id="encrypted-text" rows="4" cols="50" placeholder="Enter Encrypted Text..." name="ct">${cipher}</textarea>
+                <textarea class="key_box size2" id="encrypted-text" rows="4" cols="50" placeholder="Enter Encrypted Text..." name="ct"></textarea>
                 <button class="generate_key second">Decrypt</button>
                 </form>
             </div>
@@ -86,7 +85,7 @@
             <!-- Result Section -->
             <div class="rsa_enc_dec_in">
                 <h2 class="rsa_en_de_head">Result</h2>
-                <textarea class="result_output" id="result" readonly placeholder="The result will appear here" name="pt">${pt}</textarea>
+                <textarea class="result_output" id="result" readonly placeholder="The result will appear here" name="pt"></textarea>
                 <button class="result_but">Copy Result</button>
             </div>
         </div>
