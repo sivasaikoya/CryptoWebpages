@@ -88,7 +88,7 @@
             key = document.getElementById("manual-public-key").value;
             pt = document.getElementById("plain-text").value;
             try {
-                const response = await fetch(`http://localhost:8080/aes_en?pt=${pt}&key=${key}`);
+                const response = await fetch(`https://cryptoproject.onrender.com/aes_en?pt=${pt}&key=${key}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -107,7 +107,7 @@
             key = document.getElementById("manual-private-key").value;
             ct = document.getElementById("encrypted-text").value;
             try {
-                const response = await fetch(`http://localhost:8080/aes_de?ct=${ct}&key=${key}`);
+                const response = await fetch(`https://cryptoproject.onrender.com/aes_de?ct=${ct}&key=${key}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }

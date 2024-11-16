@@ -99,7 +99,7 @@
     
         async function fetchData(key) {
             try {
-                const response = await fetch(`http://localhost:8080/rsa/${key}`);
+                const response = await fetch(`https://cryptoproject.onrender.com/rsa/${key}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -127,7 +127,7 @@
             try {
                 publicKey_ = document.getElementById("manual-public-key").value;
                 plain_text = document.getElementById("plain-text").value;
-                const response = await fetch(`http://localhost:8080/rsa_encrypt?pub=${publicKey_}&pt=${plain_text}`);
+                const response = await fetch(`https://cryptoproject.onrender.com/rsa_encrypt?pub=${publicKey_}&pt=${plain_text}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -149,7 +149,7 @@
             try {
                 privateKey_ = document.getElementById("manual-private-key").value;
                 cipher_text_ = document.getElementById("encrypted-text").value;
-                const response = await fetch(`http://localhost:8080/rsa_decrypt?pvt=${privateKey_}&ct=${cipher_text_}`);
+                const response = await fetch(`https://cryptoproject.onrender.com/rsa_decrypt?pvt=${privateKey_}&ct=${cipher_text_}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }

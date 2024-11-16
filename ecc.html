@@ -92,7 +92,7 @@
     <script>
         async function display_keys() {
             try {
-                const response = await fetch(`http://localhost:8080/ecc_keys`);
+                const response = await fetch(`https://cryptoproject.onrender.com/ecc_keys`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -114,7 +114,7 @@
             try {
                 pvt = document.getElementById("manual-private-key").value;
                 pub = document.getElementById("encrypted-text").value;
-                const response = await fetch(`http://localhost:8080/ecc_sharedkey?pvt=${pvt}&pub=${pub}`);
+                const response = await fetch(`https://cryptoproject.onrender.com/ecc_sharedkey?pvt=${pvt}&pub=${pub}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
