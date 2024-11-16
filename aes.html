@@ -53,12 +53,14 @@
             <!-- RSA Encryption Section (Right) -->
             <div class="encrypt_decrypt_section">
                 <h2 class="rsa_en_de_head">AES Encryption</h2>
-                <label class="select_size label2" for="manual-public-key">Enter Key</label>
-                <textarea class="key_box size2" id="manual-public-key" rows="1" cols="50" placeholder="Enter Key"></textarea>
+                <label class="select_size label2" for="manual-public-key"><h3>Enter Shared key generated from ECC</h3></label>
+                <textarea class="key_box size2" id="manual-public-key" rows="1" cols="50" placeholder="Enter Shared key generated from ECC"></textarea>
                 <label class="select_size label2" for="plain-text">Plain Text</label>
                 <textarea class="key_box size2" id="plain-text" rows="4" cols="50" placeholder="Enter Plain Text..."></textarea>
-                <button class="generate_key second" style="margin-bottom: 2%;" >Encrypt</button>
-                <textarea class="key_box size2" id="plain-text" rows="4" cols="50" placeholder="Enter Plain Text..."></textarea>
+                <button onclick="encrypt()" class="generate_key second" style="margin-bottom: 2%;" >Encrypt</button>
+                <textarea class="key_box size2" id="encrypted-result" rows="4" cols="50" placeholder="Encrypted text will appear here..."></textarea>
+                <button class="result_but" onclick="copyToClipboard('encrypted-result')">Copy</button>
+                
             </div>
         </div>
         
@@ -67,22 +69,72 @@
             <!-- RSA Decryption Section -->
             <div class="rsa_enc_dec_in">
                 <h2 class="rsa_en_de_head">AES Decryption</h2>
-                <label class="select_size label2" for="manual-private-key">Enter Key</label>
-                <textarea class="key_box size2" id="manual-private-key" rows="1" cols="50" placeholder="Enter Key"></textarea>
+                <label class="select_size label2" for="manual-private-key"><h3>Enter Shared key generated from ECC</h3></label>
+                <textarea class="key_box size2" id="manual-private-key" rows="1" cols="50" placeholder="Enter Shared key generated from ECC"></textarea>
                 <label class="select_size label2" for="encrypted-text">Encrypted Text</label>
                 <textarea class="key_box size2" id="encrypted-text" rows="4" cols="50" placeholder="Enter Encrypted Text..."></textarea>
-                <button class="generate_key second">Decrypt</button>
+                <button onclick="decrypt()" class="generate_key second">Decrypt</button>
             </div>
             
             <!-- Result Section -->
             <div class="rsa_enc_dec_in">
                 <h2 class="rsa_en_de_head">Result</h2>
                 <textarea class="result_output" id="result" readonly placeholder="The result will appear here"></textarea>
-                <button class="result_but">Copy Result</button>
             </div>
         </div>
     </div>
-    
+    <script>
+        async function encrypt() {
+            key = document.getElementById("manual-public-key").value;
+            pt = document.getElementById("plain-text").value;
+            try {
+                const response = await fetch(`http://localhost:8080/aes_en?pt=${pt}&key=${key}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                displayData_(data);
+            } catch (error) {
+                console.error('Error fetching data:', error.message);
+                alert('key is'+key);
+            }
+        }
+        function displayData_(data){
+            document.getElementById("encrypted-result").value = data.ct;
+        }
+
+        async function decrypt() {
+            key = document.getElementById("manual-private-key").value;
+            ct = document.getElementById("encrypted-text").value;
+            try {
+                const response = await fetch(`http://localhost:8080/aes_de?ct=${ct}&key=${key}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                displayData(data);
+            } catch (error) {
+                console.error('Error fetching data:', error.message);
+                alert('key is'+key);
+            }
+        }
+        function displayData(data){
+            document.getElementById("result").value = data.pt;
+        }
+        function copyToClipboard(id) {
+        const textArea = document.getElementById(id);  // Get the textarea by ID
+        textArea.select();  // Select the text in the textarea
+        textArea.setSelectionRange(0, 99999);  // For mobile devices
+
+        try {
+        // Try copying the selected text to the clipboard
+            document.execCommand('copy');
+            alert('Copied to clipboard!');  // Optional: Show a success message
+        } catch (err) {
+            console.error('Error copying text: ', err);
+        }
+}
+    </script>
 
 </body>
 </html>

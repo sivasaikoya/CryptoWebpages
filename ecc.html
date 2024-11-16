@@ -20,42 +20,47 @@
                 
                 <div class="key_gen_back">
                     <h2 class="key_generate_head">Generate ECC Keys</h2>
-                    <form action="ecc">
-                    <button class="generate_key">Generate ECC Key Pair</button>
+                    <!-- <form action="ecc"> -->
+                    <button onclick="display_keys()" class="generate_key">Generate ECC Key Pair</button>
                     <div class="key_gen_pub_pri">
                         <div class="inner_key_gen">
                             <div class="row_copy_gen">
                                 <label class="key_head" for="public-key">Alice's Public Key</label>
-                                <textarea class="key_box box1" id="public-key" readonly="" placeholder="Alice's public key will appear here"></textarea>
+                                <textarea class="key_box box1" id="apublic-key" readonly="" placeholder="Alice's public key will appear here"></textarea>
+                                <button class="result_but copy" onclick="copyToClipboard('apublic-key')">Copy</button>
+
                             </div>
                             
                         </div>
                         <div class="inner_key_gen">
                             <div class="row_copy_gen">
                                 <label class="key_head" for="private-key">Alice's Private Key</label>
-                                <textarea class="key_box box1" id="private-key" readonly="" placeholder="Alice's private key will appear here"></textarea>
-                                
+                                <textarea class="key_box box1" id="aprivate-key" readonly="" placeholder="Alice's private key will appear here"></textarea>
+                                <button class="result_but copy" onclick="copyToClipboard('aprivate-key')">Copy</button>
+
                             </div>
                             
                         </div>
                         <div class="inner_key_gen">
                           <div class="row_copy_gen">
                               <label class="key_head" for="public-key">Bobs's Public Key</label>
-                              <textarea class="key_box box1" id="public-key" readonly="" placeholder="Bob's public key will appear here"></textarea>
-                              
+                              <textarea class="key_box box1" id="bpublic-key" readonly="" placeholder="Bob's public key will appear here"></textarea>
+                              <button class="result_but copy" onclick="copyToClipboard('bpublic-key')">Copy</button>
+
                           </div>
                           
                       </div>
                       <div class="inner_key_gen">
                           <div class="row_copy_gen">
                               <label class="key_head" for="private-key">Bobs's Private Key</label>
-                              <textarea class="key_box box1" id="private-key" readonly="" placeholder="Bob's private key will appear here"></textarea>
-                              
+                              <textarea class="key_box box1" id="bprivate-key" readonly="" placeholder="Bob's private key will appear here"></textarea>
+                              <button class="result_but copy" onclick="copyToClipboard('bprivate-key')">Copy</button>
+
                           </div>
                           
                       </div>
                     </div>
-                    </form>
+                    <!-- </form> -->
                 </div>
             </div>
           
@@ -67,24 +72,78 @@
             <div class="rsa_enc_dec_in">
             
                 <h2 class="rsa_en_de_head">Generate Shared Key</h2>
-                <form action="sharedkey">
+                <!-- <form action="sharedkey"> -->
                 <label class="select_size label2" for="manual-private-key">Enter Sender's Private Key</label>
                 <textarea class="key_box size2" id="manual-private-key" rows="1" cols="50" placeholder="Enter Sender's Private Key..." name="pvt"></textarea>
                 <label class="select_size label2" for="encrypted-text">Enter Reciever's Public Key</label>
                 <textarea class="key_box size2" id="encrypted-text" rows="4" cols="50" placeholder="Enter Reciever's Public Key..." name="pub"></textarea>
-                <button class="generate_key second">Generate</button>
-                </form>
+                <button onclick="display_shared_key()" class="generate_key second">Generate</button>
+                <!-- </form> -->
             </div>
             
             <!-- Result Section -->
             <div class="rsa_enc_dec_in">
                 <h2 class="rsa_en_de_head">Shared Key</h2>
                 <textarea class="result_output" id="result" readonly placeholder="The result will appear here"></textarea>
-                <button class="result_but">Copy Result</button>
+                <button class="result_but" onclick="copyToClipboard('result')">Copy</button>
             </div>
         </div>
     </div>
-    
+    <script>
+        async function display_keys() {
+            try {
+                const response = await fetch(`http://localhost:8080/ecc_keys`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                displayData_(data);
+            } catch (error) {
+                console.error('Error fetching data:', error.message);
+                alert('Failed to fetch RSA keys. Please try again.');
+            }
+        }
+        function displayData_(data){
+            document.getElementById("aprivate-key").value = data.apvt;
+            document.getElementById("apublic-key").value = data.apub;
+            document.getElementById("bprivate-key").value = data.bpvt;
+            document.getElementById("bpublic-key").value = data.bpub;
+            
+        }
+        async function display_shared_key() {
+            try {
+                pvt = document.getElementById("manual-private-key").value;
+                pub = document.getElementById("encrypted-text").value;
+                const response = await fetch(`http://localhost:8080/ecc_sharedkey?pvt=${pvt}&pub=${pub}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                displayData(data);
+            } catch (error) {
+                console.error('Error fetching data:', error.message);
+                alert(pvt);
+            }
+        }
+        function displayData(data){
+            document.getElementById("result").value=data.sharedkey;
+            
+        }
+        function copyToClipboard(id) {
+        const textArea = document.getElementById(id);  // Get the textarea by ID
+        textArea.select();  // Select the text in the textarea
+        textArea.setSelectionRange(0, 99999);  // For mobile devices
+
+        try {
+        // Try copying the selected text to the clipboard
+            document.execCommand('copy');
+            alert('Copied to clipboard!');  // Optional: Show a success message
+        } catch (err) {
+            console.error('Error copying text: ', err);
+        }
+}
+
+    </script>
 
 </body>
 </html>
