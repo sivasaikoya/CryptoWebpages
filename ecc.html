@@ -6,8 +6,20 @@
     <meta name="description" content="ECC Encryption and Decryption Tool">
     <title>HashEncrypt Pro</title>
     <link rel="stylesheet" href="css/ecc.css">
+    <style>
+  #loader {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    color: #333;
+    z-index: 1000;
+  }
+    </style>
 </head>
 <body>
+    <div id="loader" style="display: none;">Loading...(Try reloading in its taking too much time)</div>
 
     <div id="root">
         <!-- Main Heading -->
@@ -91,6 +103,8 @@
     </div>
     <script>
         async function display_keys() {
+            const loader = document.getElementById("loader");
+            loader.style.display = "block";
             try {
                 const response = await fetch(`https://cryptoproject.onrender.com/ecc_keys`);
                 if (!response.ok) {
@@ -100,8 +114,10 @@
                 displayData_(data);
             } catch (error) {
                 console.error('Error fetching data:', error.message);
-                alert('Failed to fetch RSA keys. Please try again.');
-            }
+                alert('Failed to fetch keys. Please try again.');
+            }finally {
+        loader.style.display = "none"; // Hide loader
+    }
         }
         function displayData_(data){
             document.getElementById("aprivate-key").value = data.apvt;
@@ -111,6 +127,8 @@
             
         }
         async function display_shared_key() {
+            const loader = document.getElementById("loader");
+            loader.style.display = "block";
             try {
                 pvt = document.getElementById("manual-private-key").value;
                 pub = document.getElementById("encrypted-text").value;
@@ -123,7 +141,9 @@
             } catch (error) {
                 console.error('Error fetching data:', error.message);
                 alert(pvt);
-            }
+            }finally {
+        loader.style.display = "none"; // Hide loader
+    }
         }
         function displayData(data){
             document.getElementById("result").value=data.sharedkey;
